@@ -1,0 +1,141 @@
+<?php
+    ob_start();
+    require_once '../../../config/config.php';
+    require_once '../../../connection/db.php';
+    $title = "Edit Scholar Granted";
+    $id    = $_GET['id'];
+    $rows  = mysqli_query($conn, "SELECT * FROM ScholarGranted_Tbl Where SchGrantedID = $id");
+    foreach ($rows as $row) {
+        $ScholarshipID = $row['ScholarshipID'];
+        $StudentID     = $row['StudentID'];
+        $YearID        = $row['YearID'];
+        $Amount        = $row['Amount'];
+        $GrantedDate   = $row['GrantedDate'];
+        $IsContinue    = $row['IsContinue'];
+        $RequestedBy   = $row['RequestedBy'];
+    }
+?>
+<h4 class="fw-bold mb-3">កែប្រែ ការផ្តល់អាហាររូករណ៍</h4>
+<div class="row">
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-body">
+                <form action="<?php echo BASE_URL; ?>actions/ScholarshipGrantedAction.php" method="POST">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label class="form-label">អាហាររូករណ៍</label>
+                                <select id="ScholarshipID" name="ScholarshipID" class="form-select">
+                                    <option select hidden>
+                                        ------------------------------------------------------------------
+                                    </option>
+                                    <?php
+                                        $rows = mysqli_query($conn, "SELECT * FROM Scholarship_Tbl");
+                                        foreach ($rows as $row) {
+                                            $selected = ($row["ScholarshipID"] == $ScholarshipID) ? "selected" : "";
+                                        ?>
+                                    <option value="<?php echo $row['ScholarshipID']; ?>"<?php echo $selected ?>>
+                                        <?php echo $row['Scholarship']; ?>
+                                    </option>
+                                    <?php
+                                    }?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label class="form-label">និសិត្ស</label>
+                                <select id="StudentID" name="StudentID" class="form-select">
+                                    <option select hidden>
+                                        ------------------------------------------------------------------
+                                    </option>
+                                    <?php
+                                        $rows = mysqli_query($conn, "SELECT * FROM tblstudentinfo");
+                                        foreach ($rows as $row) {
+                                            $selected = ($row["StudentID"] == $StudentID) ? "selected" : "";
+                                        ?>
+                                    <option value="<?php echo $row['StudentID']; ?>"<?php echo $selected ?>>
+                                        <?php echo $row['NameInKhmer']; ?>
+                                    </option>
+                                    <?php
+                                    }?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label class="form-label">ឆ្នាំ</label>
+                                <select id="YearID" name="YearID" class="form-select">
+                                    <option select hidden>
+                                        ------------------------------------------------------------------
+                                    </option>
+                                    <?php
+                                        $rows = mysqli_query($conn, "SELECT * FROM tblyear");
+                                        foreach ($rows as $row) {
+                                            $selected = ($row["YearID"] == $YearID) ? "selected" : "";
+                                        ?>
+                                    <option value="<?php echo $row['YearID']; ?>"<?php echo $selected ?>>
+                                        <?php echo $row['YearNameKH']; ?>
+                                    </option>
+                                    <?php
+                                    }?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label class="form-label" for="basic-default-fullname">ស្នើរដោយ</label>
+                                <input type="text" value="<?php echo $RequestedBy ?>" required name="RequestedBy"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label class="form-label" for="basic-default-fullname">ចំនួន</label>
+                                <input type="text" value="<?php echo $Amount ?>" required name="Amount"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label class="form-label">ស្ថានភាព</label>
+                                <select id="IsContinue" name="IsContinue" class="form-select">
+                                    <option hidden> ------------------------------------------------------------------
+                                    </option>
+                                    <option value="1"                                                      <?php if ($IsContinue == 1) {
+                                                              echo 'selected';
+                                                      }
+                                                      ?>> Active </option>
+                                    <option value="0"                                                      <?php if ($IsContinue == 0) {
+                                                              echo 'selected';
+                                                      }
+                                                      ?>> Inactive
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label class="form-label" for="basic-default-fullname">កាលបរិច្ឆេទ</label>
+                                <input type="date" value="<?php echo $GrantedDate; ?>" name="GrantedDate"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- // Post SchGrantedID -->
+                    <input type="hidden" value="<?php echo $id; ?>" name="SchGrantedID" class="form-control" />
+                    <button type="submit" name="btnAdd" class="btn  btn-primary">Save</button>
+                    <a href="index.php">
+                        <button type="button" class="btn  btn-secondary">Cancel</button>
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    $content = ob_get_clean();
+include BASE_PATH . 'views/admin/master.php';
+?>
