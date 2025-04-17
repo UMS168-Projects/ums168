@@ -21,7 +21,8 @@ $title = "List Education";
                     <tr>
                         <th>លរ</th>
                         <th>ឈ្មោះសិស្ស</th>
-                        <th>ប្រភេទសាលា</th>
+                        <th>សាលា</th>
+                        <th>ប្រភេទ</th>
                         <th>ខេត្ត</th>
                         <th>ឆ្នាំសិក្សា</th>
                         <th>Status</th>
@@ -38,11 +39,11 @@ $title = "List Education";
                         ?>
                     <tr>
                         <td><?php echo $No ?></td>
-                        <td><?php echo empty($row['NameInLatin']) ? 'N/A' : $row['NameInLatin'] ?></td>
-                        <td><?php echo empty($row['SchoolTypeID']) ? 'N/A' : $row['SchoolTypeID'] ?></td>
-                        <!-- <td><?php echo empty($row['SexID']) ? 'N/A' : $row['SexID'] ?></td> -->
-                        <td><?php echo empty($row['DOB']) ? 'N/A' : $row['DOB'] ?></td>
-                        <td><?php echo empty($row['PhoneNumber']) ? 'N/A' : $row['PhoneNumber'] ?></td>
+                        <td><?php echo empty($row['NameInKhmer']) ? 'N/A' : $row['NameInKhmer'] ?></td>
+                        <td><?php echo empty($row['SchoolName']) ? 'N/A' : $row['SchoolName'] ?></td>
+                        <td><?php echo empty($row['SchoolTypeNameKH']) ? 'N/A' : $row['SchoolTypeNameKH'] ?></td>
+                        <td><?php echo empty($row['ProvinceNameKH']) ? 'N/A' : $row['ProvinceNameKH'] ?></td>
+                        <td><?php echo empty($row['AcademicYear']) ? 'N/A' : $row['AcademicYear'] ?></td>
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div class="form-check form-switch">

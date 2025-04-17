@@ -31,10 +31,19 @@ class EducationController
     public function list()
     {
         global $conn;
+        // $query = "SELECT * FROM tbleducationalbackground;";
 
-        $query = "SELECT EducationalBackgroundID, SchoolTypeID, SchoolName, AcademicYearID, ProvinceID, StudentID
-        FROM tbleducationalbackground
-        INNER JOIN tblschooltype on tbleducationalbackground.schooltypeid =  tblschooltype.schooltypeid";
+        $query = "SELECT eb.EducationalBackgroundID, eb.SchoolTypeID, eb.SchoolName, eb.AcademicYearID, eb.ProvinceID, eb.StudentID, 
+        st.SchoolTypeNameKH, 
+        sd.NameInKhmer,
+        pv.ProvinceNameKH,
+        ad.AcademicYear
+        FROM tbleducationalbackground AS eb
+        INNER JOIN tblschooltype AS st ON eb.SchoolTypeID = st.SchoolTypeID
+        INNER JOIN tblprovince AS pv ON eb.ProvinceID = pv.ProvinceID
+        INNER JOIN tblacademicyear AS ad ON eb.AcademicYearID = ad.AcademicYearID
+        INNER JOIN tblstudentinfo AS sd ON eb.StudentID = sd.StudentID;";
+
 
         $result = mysqli_query($conn, $query);
 
