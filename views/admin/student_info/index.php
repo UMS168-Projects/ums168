@@ -35,8 +35,8 @@ $title = "List StudentInfo";
                         <?php
                         $StudentInfoController = new StudentInfoController();
                         $rows = $StudentInfoController->list();
+                        $No = 1;
                         foreach ($rows as $row):
-                            $No = 1;
                         ?>
                     <tr>
                         <td><?php echo $No ?></td>

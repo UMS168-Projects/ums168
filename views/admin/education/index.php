@@ -2,13 +2,13 @@
 ob_start();
 require_once '../../../config/config.php';
 require_once '../../../connection/db.php';
-require_once BASE_PATH . 'controllers/StudentInfoController.php';
+require_once BASE_PATH . 'controllers/EducationController.php';
 
-$title = "List StudentInfo";
+$title = "List Education";
 ?>
 
 <h4 class="fw-bold mb-2 d-flex justify-content-between align-items-center">
-    បញ្ជី ព័ត៌មាននិសិ្សត
+    បញ្ជី ប្រវត្តនៃការសិក្សា
     <a href="create.php" style="font-size:30px;" class="text-primary">
         <i class="bi bi-plus-square-fill "></i>
     </a>
@@ -20,12 +20,10 @@ $title = "List StudentInfo";
                 <thead class="table-secondary text-center">
                     <tr>
                         <th>លរ</th>
-                        <th>ID</th>
-                        <th>ឈ្មោះ​ឡាតាំង</th>
-                        <th>ឈ្មោះខ្មែរ</th>
-                        <th>ភេទ</th>
-                        <th>ថ្ងៃខែឆ្នាំ​កំំណើត</th>
-                        <th>លេខទូរសព្ទ</th>
+                        <th>ឈ្មោះសិស្ស</th>
+                        <th>ប្រភេទសាលា</th>
+                        <th>ខេត្ត</th>
+                        <th>ឆ្នាំសិក្សា</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -33,17 +31,16 @@ $title = "List StudentInfo";
                 <tbody>
                     <tr>
                         <?php
-                        $StudentInfoController = new StudentInfoController();
-                        $rows = $StudentInfoController->list();
+                        $educationController = new EducationController();
+                        $rows = $educationController->list();
+                        $No = 1;
                         foreach ($rows as $row):
-                            $No = 1;
                         ?>
                     <tr>
                         <td><?php echo $No ?></td>
-                        <td><?php echo $row['StudentID']; ?></td>
                         <td><?php echo empty($row['NameInLatin']) ? 'N/A' : $row['NameInLatin'] ?></td>
-                        <td><?php echo empty($row['NameInKhmer']) ? 'N/A' : $row['NameInKhmer'] ?></td>
-                        <td><?php echo empty($row['SexID']) ? 'N/A' : $row['SexID'] ?></td>
+                        <td><?php echo empty($row['SchoolTypeID']) ? 'N/A' : $row['SchoolTypeID'] ?></td>
+                        <!-- <td><?php echo empty($row['SexID']) ? 'N/A' : $row['SexID'] ?></td> -->
                         <td><?php echo empty($row['DOB']) ? 'N/A' : $row['DOB'] ?></td>
                         <td><?php echo empty($row['PhoneNumber']) ? 'N/A' : $row['PhoneNumber'] ?></td>
                         <td>
