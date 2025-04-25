@@ -4,53 +4,95 @@ require_once '../../../config/config.php';
 require_once '../../../connection/db.php';
 $title = "Create Educational Background";
 ?>
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h4 class="fw-bold mb-0">បញ្ចូល ប្រវត្តិនៃការសិក្សា</h4>
-  <a href="index.php">
-    <button type="button" style="font-size: 0px;" class="btn btn-primary">
-      <i class='bx bx-arrow-back'></i>
-    </button>
-  </a>
-</div>
+<h4 class="fw-bold mb-3">បញ្ចូល  ប្រវត្តិនៃការសិក្សា</h4>
 <div class="row">
   <div class="col-xl">
     <div class="card mb-4">
       <div class="card-body">
-        <form action="<?php echo BASE_URL ?>controllers/BatchController.php" method="POST">
+        <form action="<?php echo BASE_URL ?>controllers/EducationController.php" method="POST">
           <div class="row">
-          <div class="col-sm-6">
+            <div class="col-sm-3">
               <div class="mb-3">
                 <label for="defaultSelect" class="form-label">និសិត្ស</label>
-                <select id="TxtStatus" name="TxtStudentID" class="form-select">
+                <select name="TxtStudentID" id="TxtStudentID" class="form-select">
                   <option select hidden>
                     --------------------------------------------------------------------------------------------------------------------------------------------------
                   </option>
                   <?php
-                  $faculties = mysqli_query($conn, "SELECT * FROM tblprovince");
-                  foreach ($faculties as $faculty) { ?>
-                    <option value="<?php echo $faculty['ProvinceID']; ?>">
-                      <?php echo $faculty['ProvinceNameKH']; ?>
+                  $rows = mysqli_query($conn, "SELECT * FROM tblstudentinfo");
+                  ?>
+                  <?php foreach ($rows as $row) { ?>
+                    <option value="<?php echo $row['StudentID']; ?>">
+                      <?php echo $row['NameInKhmer']; ?>
                     </option>
                   <?php } ?>
                 </select>
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
               <div class="mb-3">
-                <label class="form-label" for="basic-default-fullname">ឈ្មោះខ្មែរ</label>
-                <input type="text" required name="TxtBatchNameKH" id="TxtBatchNameKH" class="form-control" />
+                <label class="form-label" for="basic-default-fullname">ឈ្មោះសាលា</label>
+                <input type="text" required name="TxtSchoolName" class="form-control" id="TxtSchoolName" />
               </div>
             </div>
-            <div class="col-sm-6">
+            <?php
+            $rows = mysqli_query($conn, "SELECT * FROM tblschooltype");
+            ?>
+            <div class="col-sm-3">
               <div class="mb-3">
-                <label class="form-label" for="basic-default-fullname">ឈ្មោះអង់គ្លេស</label>
-                <input type="text" required name="TxtBatchNameEN" id="TxtBatchNameEN" class="form-control" />
+                <label for="defaultSelect" class="form-label">ប្រភេទសាលា</label>
+                <select name="TxtSchoolTypeID" id="TxtSchoolTypeID" class="form-select">
+                  <option select hidden>
+                    --------------------------------------------------------------------------------------------------------------------------------------------------
+                  </option>
+                  <?php foreach ($rows as $row) { ?>
+                    <option value="<?php echo $row['SchoolTypeID']; ?>">
+                      <?php echo $row['SchoolTypeNameKH']; ?>
+                    </option>
+                  <?php } ?>
+                </select>
               </div>
             </div>
-            <div class="col-sm-6">
+            <?php
+            $rows = mysqli_query($conn, "SELECT * FROM tblacademicyear");
+            ?>
+            <div class="col-sm-3">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label">ឆ្នាំសិក្សា</label>
+                <select name="TxtAcademicYearID" id="TxtAcademicYearID" class="form-select">
+                  <option select hidden>
+                    --------------------------------------------------------------------------------------------------------------------------------------------------
+                  </option>
+                  <?php foreach ($rows as $row) { ?>
+                    <option value="<?php echo $row['AcademicYearID']; ?>">
+                      <?php echo $row['AcademicYear']; ?>
+                    </option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+            <?php
+            $rows = mysqli_query($conn, "SELECT * FROM tblprovince");
+            ?>
+            <div class="col-sm-3">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label">ខេត្តឬរាជធានី</label>
+                <select name="TxtProvinceID" id="TxtProvinceID" class="form-select">
+                  <option select hidden>
+                    --------------------------------------------------------------------------------------------------------------------------------------------------
+                  </option>
+                  <?php foreach ($rows as $row) { ?>
+                    <option value="<?php echo $row['ProvinceID']; ?>">
+                      <?php echo $row['ProvinceNameKH']; ?>
+                    </option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-3">
               <div class="mb-3">
                 <label for="defaultSelect" class="form-label">Status</label>
-                <select id="TxtStatus" name="TxtStatus" class="form-select">
+                <select id="TxtStatus"  name="TxtStatus" class="form-select">
                   <option select hidden>
                     --------------------------------------------------------------------------------------------------------------------------------------------------
                   </option>
@@ -59,7 +101,9 @@ $title = "Create Educational Background";
                 </select>
               </div>
             </div>
+            <!-- Clode div row -->
           </div>
+          
           <div class="float-start">
             <button type="submit" id="btnSave" disabled name="btnSave" class="btn  btn-primary">Save</button>
             <a href="index.php">
@@ -75,20 +119,35 @@ $title = "Create Educational Background";
 <!-- Validate Form -->
 <script>
   function validateForm() {
-    var txtBatchNameKH = document.getElementById("TxtBatchNameKH").value;
-    var txtBatchNameEN = document.getElementById("TxtBatchNameEN").value;
+    const isValid = 
+      document.getElementById("TxtStudentID").value.trim() !== "" &&
+      document.getElementById("TxtSchoolName").value.trim() !== "" &&
+      document.getElementById("TxtSchoolTypeID").value.trim() !== "" &&
+      document.getElementById("TxtAcademicYearID").value.trim() !== "" &&
+      document.getElementById("TxtProvinceID").value.trim() !== "" &&
+      document.getElementById("TxtStatus").value.trim() !== "";
 
-    if (txtBatchNameKH !== "" && txtBatchNameEN !== "") {
-      document.getElementById("btnSave").disabled = false;
-    } else {
-      document.getElementById("btnSave").disabled = true;
-    }
+    document.getElementById("btnSave").disabled = !isValid;
   }
 
-  document.getElementById("TxtBatchNameKH").addEventListener("input", validateForm);
-  document.getElementById("TxtBatchNameEN").addEventListener("input", validateForm);
+  const inputs = [
+    "TxtStudentID",
+    "TxtSchoolName",
+    "TxtSchoolTypeID",
+    "TxtAcademicYearID",
+    "TxtProvinceID",
+    "TxtStatus"
+  ];
 
-  validateForm();
+  inputs.forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("change", validateForm);
+      el.addEventListener("input", validateForm);
+    }
+  });
+
+  validateForm(); // Initial check on page load
 </script>
 
 <?php

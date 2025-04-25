@@ -1,7 +1,8 @@
 <?php
+ob_start();
 require_once '../../../config/config.php';
 require_once '../../../connection/db.php';
-$title = "Edit ";
+$title = "Edit Educational Background";
 ?>
 <h4 class="fw-bold mb-3">កែប្រែ ប្រវត្តិនៃការសិក្សា</h4>
 <div class="row">

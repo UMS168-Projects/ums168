@@ -47,17 +47,17 @@ $title = "List Education";
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input statusSwitch" type="checkbox" role="switch" data-id="<?php echo $row['StudentID']; ?>"
+                                    <input class="form-check-input statusSwitch" type="checkbox" role="switch" data-id="<?php echo $row['EducationalBackgroundID']; ?>"
                                         <?php echo ($row['Status'] == 1) ? 'checked' : ''; ?>>
                                 </div>
                             </div>
                         </td>   
                         <td class="text-center">
-                            <a href="edit.php?id=<?php echo $row['StudentID']; ?>">
+                            <a href="edit.php?id=<?php echo $row['EducationalBackgroundID']; ?>">
                                 <i class="bx bxs-edit"></i>
                             </a>
                             &nbsp;
-                            <a href="javascript:void(0);" class="btnDelete text-danger" data-id="<?php echo $row['StudentID']; ?>" name="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            <a href="javascript:void(0);" class="btnDelete text-danger" data-id="<?php echo $row['EducationalBackgroundID']; ?>" name="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                 style="color:r ed;">
                                 <i class="bx bxs-trash"></i>
                             </a>
@@ -81,7 +81,7 @@ $title = "List Education";
             switchBtn.addEventListener("change", function() {
                 let StudentInfoId = this.dataset.id;
                 let status = this.checked ? 1 : 0;
-                let url = "<?php echo BASE_URL; ?>controllers/StudentInfoController.php?id=" + StudentInfoId + "&status=" + status;
+                let url = "<?php echo BASE_URL; ?>controllers/EducationController.php?id=" + StudentInfoId + "&status=" + status;
                 // Redirect to the URL
                 window.location.href = url;
             });
@@ -93,7 +93,7 @@ $title = "List Education";
     $(document).ready(function() {
         $('.btnDelete').on('click', function() {
             var deleteId = $(this).data('id');
-            var deleteUrl = '<?php echo BASE_URL ?>controllers/StudentInfoController.php?delete_id=' + deleteId;
+            var deleteUrl = '<?php echo BASE_URL ?>controllers/EducationController.php?delete_id=' + deleteId;
             $('#confirmDelete').attr('href', deleteUrl);
         });
     });

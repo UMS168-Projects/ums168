@@ -19,8 +19,8 @@ if (isset($_GET['delete_id'])) {
     $EducationController->delete($id);
 }
 
-if (isset($_GET['status_id']) && isset($_GET['status'])) {
-    $id = $_GET['status_id'];
+if (isset($_GET['id']) && isset($_GET['status'])) {
+    $id = $_GET['id'];
     $status = $_GET['status'];
     $EducationController = new EducationController();
     $EducationController->status($id, $status);
@@ -33,7 +33,7 @@ class EducationController
         global $conn;
         // $query = "SELECT * FROM tbleducationalbackground;";
 
-        $query = "SELECT eb.EducationalBackgroundID, eb.SchoolTypeID, eb.SchoolName, eb.AcademicYearID, eb.ProvinceID, eb.StudentID, 
+        $query = "SELECT eb.EducationalBackgroundID, eb.SchoolTypeID, eb.SchoolName, eb.AcademicYearID, eb.ProvinceID, eb.StudentID, eb.Status, 
         st.SchoolTypeNameKH, 
         sd.NameInKhmer,
         pv.ProvinceNameKH,
@@ -60,26 +60,27 @@ class EducationController
     public function create()
     {
         global $conn;
-        $TxtBatchNameKH = $_POST['TxtBatchNameKH'];
-        $TxtBatchNameEN = $_POST['TxtBatchNameEN'];
-        $TxtStatus = $_POST['TxtStatus'];
 
-        $sql = "INSERT INTO tblbatch (BatchNameKH, BatchNameEN, Status) VALUES (?, ?, ?)";
+        $TxtStudentID = mysqli_real_escape_string($conn, $_POST['TxtStudentID']);
+        $TxtSchoolName = mysqli_real_escape_string($conn, $_POST['TxtSchoolName']);
+        $TxtSchoolTypeID = mysqli_real_escape_string($conn, $_POST['TxtSchoolTypeID']);
+        $TxtAcademicYearID = mysqli_real_escape_string($conn, $_POST['TxtAcademicYearID']);
+        $TxtProvinceID = mysqli_real_escape_string($conn, $_POST['TxtProvinceID']);
+        $TxtStatus = mysqli_real_escape_string($conn, $_POST['TxtStatus']);
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssi", $TxtBatchNameKH, $TxtBatchNameKH, $TxtStatus);
+        $sql = "INSERT INTO tbleducationalbackground 
+                (StudentID, SchoolName, SchoolTypeID, AcademicYearID, ProvinceID, Status) 
+                VALUES ('$TxtStudentID', '$TxtSchoolName', '$TxtSchoolTypeID', '$TxtAcademicYearID', '$TxtProvinceID', '$TxtStatus')";
 
-        if ($stmt->execute()) {
-            $_SESSION['snackbar'] = ['message' => 'Action completed successfully!', 'type' => 'success'];
-            header('Location: ' . BASE_URL . 'views/admin/batch/index.php');
-            exit();
+        if (mysqli_query($conn, $sql)) {
+            $_SESSION['snackbar'] = ['message' => 'Educational background added successfully.', 'type' => 'success'];
         } else {
-            $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
-            header('Location: ' . BASE_URL . 'views/admin/batch/index.php');
+            $_SESSION['snackbar'] = ['message' => 'Failed to add educational background.', 'type' => 'error'];
         }
-        $stmt->close();
-    }
 
+        header('Location: ' . BASE_URL . 'views/admin/educational/index.php');
+        exit();
+    }
     public function edit($id)
     {
         global $conn;
@@ -121,7 +122,7 @@ class EducationController
     {
         global $conn;
 
-        $sql = "DELETE FROM tblbatch WHERE BatchID = ?";
+        $sql = "DELETE FROM tbleducationalbackground WHERE EducationalBackgroundID = ?";
 
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "i", $id);
@@ -135,7 +136,7 @@ class EducationController
             $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
         }
 
-        header('Location: ' . BASE_URL . 'views/admin/batch/index.php');
+        header('Location: ' . BASE_URL . 'views/admin/education/index.php');
         exit();
     }
 
@@ -143,7 +144,7 @@ class EducationController
     {
         global $conn;
 
-        $sql = "UPDATE tblbatch SET Status = ? WHERE BatchID = ?";
+        $sql = "UPDATE tbleducationalbackground SET Status = ? WHERE EducationalBackgroundID = ?";
 
         $stmt = mysqli_prepare($conn, $sql);
         mysqli_stmt_bind_param($stmt, "ii", $status, $id);
@@ -157,7 +158,7 @@ class EducationController
             $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
         }
 
-        header('Location: ' . BASE_URL . 'views/admin/batch/index.php');
+        header('Location: ' . BASE_URL . 'views/admin/education/index.php');
         exit();
     }
 }
