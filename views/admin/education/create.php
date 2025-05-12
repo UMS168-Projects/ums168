@@ -9,12 +9,20 @@ $title = "Create Educational Background";
   <div class="col-xl">
     <div class="card mb-4">
       <div class="card-body">
+<<<<<<< HEAD
         <form action="<?php echo BASE_URL ?>controllers/EducationController.php" method="POST">
+=======
+      <form action="<?php echo BASE_URL ?>controllers/EducationController.php" method="POST">
+>>>>>>> 4efc0f1 (educational module)
           <div class="row">
             <div class="col-sm-3">
               <div class="mb-3">
                 <label for="defaultSelect" class="form-label">និសិត្ស</label>
+<<<<<<< HEAD
                 <select name="TxtStudentID" id="TxtStudentID" class="form-select">
+=======
+                <select name="TxtStudentID" class="form-select">
+>>>>>>> 4efc0f1 (educational module)
                   <option select hidden>
                     --------------------------------------------------------------------------------------------------------------------------------------------------
                   </option>
@@ -32,7 +40,11 @@ $title = "Create Educational Background";
             <div class="col-sm-3">
               <div class="mb-3">
                 <label class="form-label" for="basic-default-fullname">ឈ្មោះសាលា</label>
+<<<<<<< HEAD
                 <input type="text" required name="TxtSchoolName" class="form-control" id="TxtSchoolName" />
+=======
+                <input type="text" required name="TxtSchoolName" class="form-control" id="basic-default-fullname" />
+>>>>>>> 4efc0f1 (educational module)
               </div>
             </div>
             <?php
@@ -41,6 +53,7 @@ $title = "Create Educational Background";
             <div class="col-sm-3">
               <div class="mb-3">
                 <label for="defaultSelect" class="form-label">ប្រភេទសាលា</label>
+<<<<<<< HEAD
                 <select name="TxtSchoolTypeID" id="TxtSchoolTypeID" class="form-select">
                   <option select hidden>
                     --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -93,19 +106,64 @@ $title = "Create Educational Background";
               <div class="mb-3">
                 <label for="defaultSelect" class="form-label">Status</label>
                 <select id="TxtStatus"  name="TxtStatus" class="form-select">
+=======
+                <select name="TxtSchoolTypeID" class="form-select">
+>>>>>>> 4efc0f1 (educational module)
                   <option select hidden>
                     --------------------------------------------------------------------------------------------------------------------------------------------------
                   </option>
-                  <option selected value="1">Active</option>
-                  <option value="2">Inactive</option>
+                  <?php foreach ($rows as $row) { ?>
+                    <option value="<?php echo $row['TxtAcademicYearID']; ?>">
+                      <?php echo $row['SchoolTypeNameKH']; ?>
+                    </option>
+                  <?php } ?>
                 </select>
               </div>
             </div>
+<<<<<<< HEAD
+=======
+            <?php
+            $rows = mysqli_query($conn, "SELECT * FROM tblacademicyear");
+            ?>
+            <div class="col-sm-3">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label">ឆ្នាំសិក្សា</label>
+                <select name="TxtAcademicYearID" class="form-select">
+                  <option select hidden>
+                    --------------------------------------------------------------------------------------------------------------------------------------------------
+                  </option>
+                  <?php foreach ($rows as $row) { ?>
+                    <option value="<?php echo $row['AcademicYearID']; ?>">
+                      <?php echo $row['AcademicYear']; ?>
+                    </option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+            <?php
+            $rows = mysqli_query($conn, "SELECT * FROM tblprovince");
+            ?>
+            <div class="col-sm-3">
+              <div class="mb-3">
+                <label for="defaultSelect" class="form-label">ខេត្តឬរាជធានី</label>
+                <select name="TxtProvinceID" class="form-select">
+                  <option select hidden>
+                    --------------------------------------------------------------------------------------------------------------------------------------------------
+                  </option>
+                  <?php foreach ($rows as $row) { ?>
+                    <option value="<?php echo $row['ProvinceID']; ?>">
+                      <?php echo $row['ProvinceNameKH']; ?>
+                    </option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+>>>>>>> 4efc0f1 (educational module)
             <!-- Clode div row -->
           </div>
           
           <div class="float-start">
-            <button type="submit" id="btnSave" disabled name="btnSave" class="btn  btn-primary">Save</button>
+            <button type="submit" id="btnSave" name="btnSave" class="btn  btn-primary">Save</button>
             <a href="index.php">
               <button type="button" class="btn  btn-secondary">Cancel</button>
             </a>

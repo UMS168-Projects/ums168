@@ -2,29 +2,52 @@
 require_once __DIR__ . '/../connection/db.php';
 require_once __DIR__ . '/../config/config.php';
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// if (isset($_POST['btnSave'])) {
-//     $id = isset($_POST['id']) ? $_POST['id'] : null;
-//     $StudentInfoController = new StudentInfoController();
-//     if (!empty($id)) {
-//         $StudentInfoController->update();
-//     } else {
-//         $StudentInfoController->create();
-//     }
-// }
+if (isset($_POST['btnSave'])) {
+    $id = isset($_POST['id']) ? $_POST['id'] : null;
+    $EducationController = new EducationController();
+    if (!empty($id)) {
+        $EducationController->update();
+    } else {
+        $EducationController->create();
+    }
+}
 
-// if (isset($_GET['delete_id'])) {
-//     $id = $_GET['delete_id'];
-//     $StudentInfoController = new StudentInfoController();
-//     $StudentInfoController->delete($id);
-// }
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];
+    $EducationController = new EducationController();
+    $EducationController->delete($id);
+}
 
-// if (isset($_GET['status_id']) && isset($_GET['status'])) {
-//     $id = $_GET['status_id'];
-//     $status = $_GET['status'];
-//     $StudentInfoController = new StudentInfoController();
-//     $StudentInfoController->status($id, $status);
-// }
+if (isset($_GET['status_id']) && isset($_GET['status'])) {
+    $id = $_GET['status_id'];
+    $status = $_GET['status'];
+    $EducationController = new EducationController();
+    $EducationController->status($id, $status);
+}if (isset($_POST['btnSave'])) {
+    $id = isset($_POST['id']) ? $_POST['id'] : null;
+    $EducationController = new EducationController();
+    if (!empty($id)) {
+        $EducationController->update();
+    } else {
+        $EducationController->create();
+    }
+}
+
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];
+    $StudentInfoController = new StudentInfoController();
+    $StudentInfoController->delete($id);
+}
+
+if (isset($_GET['status_id']) && isset($_GET['status'])) {
+    $id = $_GET['status_id'];
+    $status = $_GET['status'];
+    $StudentInfoController = new StudentInfoController();
+    $StudentInfoController->status($id, $status);
+}
 
 class EducationController
 {
@@ -60,63 +83,32 @@ class EducationController
     public function create()
     {
         global $conn;
-        $TxtProgramID = $_POST['TxtProgramID'];
-        $TxtNameInLatin = $_POST['TxtNameInLatin'];
-        $TxtNameInKhmer = $_POST['TxtNameInKhmer'];
-        $TxtFamilyName = $_POST['TxtFamilyName'];
-        $TxtGivenName = $_POST['TxtGivenName'];
-        $TxtSexID = $_POST['TxtSexID'];
-        $TxtIDPassportNo = $_POST['TxtIDPassportNo'];
-        $TxtNationalityID = $_POST['TxtNationalityID'];
-        $TxtCountryID = $_POST['TxtCountryID'];
-        $TxtDOB = $_POST['TxtDOB'];
-        $TxtPOB = $_POST['TxtPOB'];
-        $TxtPhoneNumber = $_POST['TxtPhoneNumber'];
-        $TxtEmail = $_POST['TxtEmail'];
-        $TxtCurrentAddress = $_POST['TxtCurrentAddress'];
-        $TxtCurrentAddressPP = $_POST['TxtCurrentAddressPP'];
-        // $TxtPhoto = $_POST['TxtPhoto'];
-        $TxtRegisterDate = $_POST['TxtRegisterDate'];
-        $TxtStatus = 1;
-        $TxtStudentPassword = 1234;
-
-        if (move_uploaded_file($_FILES["TxtPhoto"]["tmp_name"], BASE_PATH . "storage/students/" . $_FILES["TxtPhoto"]["name"])) {
-            $TxtPhoto = mysqli_real_escape_string($conn, $_FILES["TxtPhoto"]["name"]);
-
-            $sql = "INSERT INTO tblstudentinfo 
-            (NameInKhmer, NameInLatin, FamilyName, GivenName, SexID, IDPassportNo, NationalityID, CountryID, DOB, POB, PhoneNumber, Email, CurrentAddress, CurrentAddressPP, RegisterDate, Photo, Status)
-            VALUES 
-            ('$TxtNameInKhmer', '$TxtNameInLatin', '$TxtFamilyName', '$TxtGivenName', '$TxtSexID', '$TxtIDPassportNo', '$TxtNationalityID', '$TxtCountryID', '$TxtDOB', '$TxtPOB', '$TxtPhoneNumber', '$TxtEmail', '$TxtCurrentAddress', '$TxtCurrentAddressPP', '$TxtRegisterDate', '$TxtPhoto', $TxtStatus)";
-
-            if (mysqli_query($conn, $sql)) {
-                $StudentID = mysqli_insert_id($conn);
-                if (isset($_POST['TxtProgramID']) && !empty($_POST['TxtProgramID'])) {
-                    $TxtProgramID = $_POST['TxtProgramID'];
-                    $TxtAssignDate = $_POST['TxtRegisterDate'];
-                    $TxtNote = mysqli_real_escape_string($conn, $_POST['TxtNote']);
-
-                    $sql = "INSERT INTO tblstudentstatus (StudentID, ProgramID, Assigned, AssignDate, Note, Status) 
-                    VALUES ('$StudentID', '$TxtProgramID', 1, '$TxtAssignDate', '$TxtNote', 1)";
-
-                    if (mysqli_query($conn, $sql)) {
-                        $_SESSION['snackbar'] = ['message' => 'Action completed successfully!', 'type' => 'success'];
-                        header('Location: ' . BASE_URL . 'views/admin/student_info/index.php');
-                        exit();
-                    } else {
-                        header('location: ./indexMaintenance.php');
-                    }
-                    mysqli_close($conn);
-                } else {
-                    header('location: ./indexMaintenance.php');
-                }
-            } else {
-                echo "Error: " . $sql . ":-" . mysqli_error($conn);
-            }
+    
+        // Get data from POST request
+        $TxtStudentID = $_POST['TxtStudentID'];
+        $TxtProvinceID = $_POST['TxtProvinceID'];
+        $TxtSchoolTypeID = $_POST['TxtSchoolTypeID'];
+        $TxtSchoolName = $_POST['TxtSchoolName'];
+        $TxtAcademicYearID = $_POST['TxtAcademicYearID'];
+        $TxtStatus = 1; // Default status
+    
+        // Create the SQL insert query
+        $sql = "INSERT INTO tbleducationalbackground 
+                (SchoolTypeID, SchoolName, AcademicYearID, ProvinceID, StudentID, Status) 
+                VALUES 
+                ('$TxtSchoolTypeID', '$TxtSchoolName', '$TxtAcademicYearID', '$TxtProvinceID', '$TxtStudentID', '$TxtStatus')";
+    
+        // Execute the query
+        if (mysqli_query($conn, $sql)) {
+            $_SESSION['snackbar'] = ['message' => 'Action completed successfully!', 'type' => 'success'];
+            header('Location: ' . BASE_URL . 'views/admin/education/index.php');
+            exit();
         } else {
-            echo "Error uploading file.";
-            
+            $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
+            header('Location: ' . BASE_URL . 'views/admin/education/index.php');
         }
     }
+    
 
     // public function create()
     // {
